@@ -7,30 +7,37 @@ namespace TuinCentrum.BL.Model
         public int? Id { get; private set; }
         public DateTime Datum { get; set; }
         public Klanten Klant { get; set; }
-        List<Producten> ProductenList = new List<Producten>();
-        public bool Afhalen { get; set; } 
+        public List<Producten> ProductenList { get; set; } = new List<Producten>();
+        public bool Afhalen { get; set; }
+        public bool Aanleg { get; set; } 
+        public int AantalProducten { get; set; }
 
-        public Offertes(int id, DateTime datum, Klanten klant, bool afhalen)
+        public Offertes(int id, DateTime datum, Klanten klant, bool afhalen, bool aanleg, int aantalProducten)
         {
             Id = id;
             Datum = datum;
             Klant = klant;
             Afhalen = afhalen;
+            Aanleg = aanleg;
+            AantalProducten = aantalProducten;
         }
 
-        // Methode om totaalprijs te berekenen
+        public void VoegProductToe(Producten product)
+        {
+            ProductenList.Add(product);
+        }
+
         public double CalculateTotalPrice()
         {
-            double totalPrice = ProductenList.Sum(product => product.Prijs);
+            double totalPrice = ProductenList.Sum(product => product.Prijs) * AantalProducten;
 
-            // Reken totaalprijs uit
             if (totalPrice > 2000)
             {
-                totalPrice *= 0.95; //  5% 
+                totalPrice *= 0.95; // 5% 
             }
             else if (totalPrice > 5000)
             {
-                totalPrice *= 0.90; //  10% 
+                totalPrice *= 0.90; // 10% 
             }
 
             if (!Afhalen)
@@ -47,25 +54,22 @@ namespace TuinCentrum.BL.Model
                 totalPrice += deliveryCost;
             }
 
-            return totalPrice;
-        }
-
-        // Methode voor landscaping prijs te berekenen
-        public double CalculateLandscapingPrice()
-        {
-            double totalPrice = ProductenList.Sum(product => product.Prijs);
-
-            if (totalPrice < 2000)
+            if (Aanleg)
             {
-                totalPrice *= 1.15; // 15% 
-            }
-            else if (totalPrice > 2000 && totalPrice <= 5000)
-            {
-                totalPrice *= 1.10; // 10% 
-            }
-            else if (totalPrice > 5000)
-            {
-                totalPrice *= 1.05; // 5% 
+                double landscapingCost = 0;
+                if (totalPrice < 2000)
+                {
+                    landscapingCost = totalPrice * 0.15; // 15% 
+                }
+                else if (totalPrice > 2000 && totalPrice <= 5000)
+                {
+                    landscapingCost = totalPrice * 0.10; // 10% 
+                }
+                else if (totalPrice > 5000)
+                {
+                    landscapingCost = totalPrice * 0.05; // 5% 
+                }
+                totalPrice += landscapingCost;
             }
 
             return totalPrice;
