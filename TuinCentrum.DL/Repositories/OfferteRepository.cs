@@ -75,3 +75,4 @@ public class OfferteRepository
 
     // Aanvullende methoden voor offerte CRUD-operaties
 }
+
