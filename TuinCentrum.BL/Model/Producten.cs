@@ -10,7 +10,7 @@ namespace TuinCentrum.BL.Model
 {
     public class Producten
     {
-        public int Id { get; private set; }
+        public int? Id { get; set; }
 
         private string nederlandseNaam;
         public string NederlandseNaam
