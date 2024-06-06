@@ -10,5 +10,7 @@ namespace TuinCentrum.BL.Interfaces
     public interface IKlantRepository
     {
         List<Klanten> GeefAlleKlanten();
+        bool HeeftKlant(Klanten klant);
+        void SchrijfKlant(Klanten klant);
     }
 }

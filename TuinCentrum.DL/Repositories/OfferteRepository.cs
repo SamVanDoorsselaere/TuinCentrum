@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using TuinCentrum.BL.Interfaces;
+﻿using TuinCentrum.BL.Interfaces;
 using TuinCentrum.BL.Model;
-using TuinCentrum.DL.Exceptions;
+using Microsoft.Data.SqlClient;
 
 public class OfferteRepository : IOfferteRepository
 {
@@ -14,89 +11,51 @@ public class OfferteRepository : IOfferteRepository
         this.connectionString = connectionString;
     }
 
-    public Offertes GeefOfferteOpId(int id)
+    public bool HeeftOfferte(Offertes offerte)
     {
-        Offertes offerte = null;
-
-        using (SqlConnection con = new SqlConnection(connectionString))
+        string SQL = "SELECT Count(*) FROM Offertes WHERE Datum=@datum"; // Gebruik de juiste kolomnaam (Datum)
+        using (SqlConnection conn = new SqlConnection(connectionString))
+        using (SqlCommand cmd = conn.CreateCommand())
         {
-            string query = @"
-                SELECT 
-                    o.Id,
-                    o.Datum,
-                    k.Id AS KlantId,
-                    k.Naam AS KlantNaam,
-                    k.Adres AS KlantAdres,
-                    o.Afhalen,
-                    o.Aanleg,
-                    op.ProductId AS ProductId,
-                    p.NederlandseNaam,
-                    p.WetenschappelijkeNaam,
-                    p.Beschrijving,
-                    p.Prijs,
-                    op.Aantal
-                FROM Offertes o
-                INNER JOIN Klanten k ON o.KlantId = k.Id
-                LEFT JOIN OfferteProducten op ON o.Id = op.OfferteID
-                LEFT JOIN Producten p ON op.ProductId = p.Id
-                WHERE o.Id = @Id";
-
-            using (SqlCommand command = new SqlCommand(query, con))
+            try
             {
-                command.Parameters.AddWithValue("@Id", id);
-
-                try
-                {
-                    con.Open();
-                    using (SqlDataReader reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            if (offerte == null)
-                            {
-                                Klanten klant = new Klanten(
-                                    reader.GetInt32(reader.GetOrdinal("KlantId")),
-                                    reader.GetString(reader.GetOrdinal("KlantNaam")),
-                                    reader.GetString(reader.GetOrdinal("KlantAdres"))
-                                );
-
-                                offerte = new Offertes(
-                                    reader.GetInt32(reader.GetOrdinal("Id")),
-                                    reader.GetDateTime(reader.GetOrdinal("Datum")),
-                                    klant,
-                                    !reader.GetBoolean(reader.GetOrdinal("Afhalen")),
-                                    reader.GetBoolean(reader.GetOrdinal("Aanleg")),
-                                    0 // AantalProducten moet apart worden behandeld
-                                );
-                            }
-
-                            if (!reader.IsDBNull(reader.GetOrdinal("ProductId")))
-                            {
-                                var product = new Producten(
-                                    reader.GetString(reader.GetOrdinal("NederlandseNaam")),
-                                    reader.GetString(reader.GetOrdinal("WetenschappelijkeNaam")),
-                                    reader.GetString(reader.GetOrdinal("Beschrijving")),
-                                    reader.GetDouble(reader.GetOrdinal("Prijs"))
-                                )
-                                {
-                                    Id = reader.GetInt32(reader.GetOrdinal("ProductId"))
-                                };
-
-                                // VoegProductToe-methode aanroepen met beide argumenten
-                                offerte.VoegProductToe(product, reader.GetInt32(reader.GetOrdinal("Aantal")));
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    throw new DataException("Fout bij het ophalen van offerte.", ex);
-                }
+                conn.Open();
+                cmd.CommandText = SQL;
+                cmd.Parameters.Add(new SqlParameter("@datum", System.Data.SqlDbType.DateTime)); // Gebruik SqlDbType.DateTime
+                cmd.Parameters["@datum"].Value = offerte.Datum;
+                int n = (int)cmd.ExecuteScalar();
+                return n > 0;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("HeeftOfferte", ex); // Update de foutmelding
             }
         }
-
-        return offerte;
     }
 
-    // Aanvullende methoden voor offerte CRUD-operaties
+    public void SchrijfOfferte(Offertes offerte)
+    {
+        string SQL = "INSERT INTO Offertes (Datum, KlantID, Afhalen, Aanleg) VALUES (@datum, @klantid, @afhalen, @aanleg)";
+        using (SqlConnection conn = new SqlConnection(connectionString))
+        using (SqlCommand cmd = conn.CreateCommand())
+        {
+            try
+            {
+                conn.Open();
+                cmd.CommandText = SQL;
+                // Hier geen waarde toewijzen aan OfferteID (identiteitskolom), de database zal deze automatisch genereren
+                cmd.Parameters.AddWithValue("@datum", offerte.Datum);
+                cmd.Parameters.AddWithValue("@klantid", offerte.KlantID);
+                cmd.Parameters.AddWithValue("@afhalen", offerte.Afhalen);
+                cmd.Parameters.AddWithValue("@aanleg", offerte.Aanleg);
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("SchrijfOfferte", ex);
+            }
+        }
+    }
+
+
 }

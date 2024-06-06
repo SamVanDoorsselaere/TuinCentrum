@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using TuinCentrum.BL.Exceptions;
 
 namespace TuinCentrum.BL.Model
@@ -65,6 +60,14 @@ namespace TuinCentrum.BL.Model
             NederlandseNaam = nederlandseNaam;
             WetenschappelijkeNaam = wetenschappelijkeNaam;
             Beschrijving = beschrijving;
+            Prijs = prijs;
+        }
+        public Producten(string nederlandseNaam)
+        {
+            NederlandseNaam = nederlandseNaam;
+        }
+        public Producten(double prijs)
+        {
             Prijs = prijs;
         }
 

@@ -8,7 +8,7 @@ namespace TuinCentrum.BL.Model
 {
     public class Klanten
     {
-        public int? Id { get; set; }
+        public int? KlantID { get; set; }
         private string naam;
         public string Naam
         {
@@ -31,10 +31,19 @@ namespace TuinCentrum.BL.Model
                 adres = value;
             }
         }
+        public Klanten(string naam)
+        {
+            Naam = naam;
+        }
+        public Klanten(string naam, string adres)
+        {
+            Naam = naam;
+            Adres = adres;
+        }
 
         public Klanten(int? id, string naam, string adres)
         {
-            Id = id;
+            KlantID = id;
             Naam = naam;
             Adres = adres;
         }

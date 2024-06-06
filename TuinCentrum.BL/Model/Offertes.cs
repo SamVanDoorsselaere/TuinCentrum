@@ -7,18 +7,27 @@ namespace TuinCentrum.BL.Model
     {
         public int? Id { get; private set; }
         public DateTime Datum { get; set; }
-        public Klanten Klant { get; set; }
+        public int KlantID {get; set;}
         private Dictionary<Producten, int> ProductenList { get; set; } = new Dictionary<Producten, int>();
         public IReadOnlyDictionary<Producten, int> Producten => ProductenList;
         public bool Afhalen { get; set; }
         public bool Aanleg { get; set; }
         public int AantalProducten { get; set; }
 
-        public Offertes(int id, DateTime datum, Klanten klant, bool afhalen, bool aanleg, int aantalProducten)
+        public Offertes(int id, DateTime datum, int klantID, bool afhalen, bool aanleg, int aantalProducten)
         {
             Id = id;
             Datum = datum;
-            Klant = klant;
+            KlantID = klantID;
+            Afhalen = afhalen;
+            Aanleg = aanleg;
+            AantalProducten = aantalProducten;
+        }
+
+        public Offertes(DateTime datum, int klantID, bool afhalen, bool aanleg, int aantalProducten)
+        {
+            Datum = datum;
+            KlantID = klantID;
             Afhalen = afhalen;
             Aanleg = aanleg;
             AantalProducten = aantalProducten;

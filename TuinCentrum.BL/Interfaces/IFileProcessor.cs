@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TuinCentrum.BL.Model;
 
 namespace TuinCentrum.BL.Interfaces
 {
-    public interface IOfferteRepository
+    public interface IFileProcessor
     {
-        bool HeeftOfferte(Offertes offerte);
-        void SchrijfOfferte(Offertes offerte);
+        List<string> LeesKlanten(string fileName);
+        List<string> LeesProducten(string fileName);
     }
 }

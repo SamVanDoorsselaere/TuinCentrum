@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TuinCentrum.DL", "TuinCentr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TuinCentrumTests", "TuinCentrumTests\TuinCentrumTests.csproj", "{1686A054-0C20-44F0-94DD-B3DB8530FA54}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TuinCentrum.UI", "TuinCentrum.UI\TuinCentrum.UI.csproj", "{FFE08A77-C634-45C7-A688-78B7CAD40DAC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TuinCentrum.UI", "TuinCentrum.UI\TuinCentrum.UI.csproj", "{FFE08A77-C634-45C7-A688-78B7CAD40DAC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TuinCentrumUI_DataUpload", "TuinCentrumUI_DataUpload\TuinCentrumUI_DataUpload.csproj", "{52E6F70B-E5C6-4556-B4DB-CBB6572E5D38}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{FFE08A77-C634-45C7-A688-78B7CAD40DAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FFE08A77-C634-45C7-A688-78B7CAD40DAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FFE08A77-C634-45C7-A688-78B7CAD40DAC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52E6F70B-E5C6-4556-B4DB-CBB6572E5D38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52E6F70B-E5C6-4556-B4DB-CBB6572E5D38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52E6F70B-E5C6-4556-B4DB-CBB6572E5D38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52E6F70B-E5C6-4556-B4DB-CBB6572E5D38}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

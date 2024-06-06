@@ -10,5 +10,7 @@ namespace TuinCentrum.BL.Interfaces
     public interface IProductRepository
     {
         List<Producten> GeefAlleProducten();
+        bool HeeftProduct(Producten product);
+        void SchrijfProduct(Producten product);
     }
 }
