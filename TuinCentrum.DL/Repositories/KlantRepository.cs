@@ -1,34 +1,48 @@
 ﻿using System.Collections.Generic;
 using TuinCentrum.BL.Model;
 using System.Data.SqlClient;
+using TuinCentrum.DL.Exceptions;
+using TuinCentrum.BL.Interfaces;
 
-public class KlantRepository
+public class KlantRepository : IKlantRepository
 {
-    private readonly DatabaseContext _context;
+    private string connectionString;
 
-    public KlantRepository(DatabaseContext context)
+    public KlantRepository(string connectionString)
     {
-        _context = context;
+        this.connectionString = connectionString;
     }
 
     public List<Klanten> GeefAlleKlanten()
     {
-        var klanten = new List<Klanten>();
-        var commando = _context.MaakCommando();
-        commando.CommandText = "SELECT * FROM Klanten";
+        List<Klanten> klanten = new List<Klanten>();
 
-        using (var reader = commando.ExecuteReader())
+        string query = "SELECT * FROM Klanten";
+        using (SqlConnection con = new SqlConnection(connectionString))
+        using (SqlCommand cmd = new SqlCommand(query, con))
         {
-            while (reader.Read())
+            try
             {
-                klanten.Add(new Klanten(
-                    reader.GetInt32(0),
-                    reader.GetString(1),
-                    reader.GetString(2)
-                ));
+                con.Open();
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Klanten klant = new Klanten(
+                            reader.GetInt32(reader.GetOrdinal("Id")),
+                            reader.GetString(reader.GetOrdinal("Naam")),
+                            reader.GetString(reader.GetOrdinal("Adres"))
+                        );
+                        klanten.Add(klant);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new DataException("Fout bij het ophalen van klanten.", ex);
             }
         }
-
         return klanten;
     }
+
 }

@@ -1,35 +1,47 @@
 ﻿using System.Collections.Generic;
 using TuinCentrum.BL.Model;
 using System.Data.SqlClient;
+using TuinCentrum.BL.Interfaces;
+using System.Collections;
+using TuinCentrum.DL.Exceptions;
 
-public class ProductRepository
+public class ProductRepository : IProductRepository
 {
-    private readonly DatabaseContext _context;
+    private string connectionString;
 
-    public ProductRepository(DatabaseContext context)
+    public ProductRepository(string connectionString)
     {
-        _context = context;
+        this.connectionString = connectionString;
     }
 
     public List<Producten> GeefAlleProducten()
     {
         var producten = new List<Producten>();
-        var commando = _context.MaakCommando();
-        commando.CommandText = "SELECT * FROM Producten";
+        string query = "SELECT * FROM Producten";
 
-        using (var reader = commando.ExecuteReader())
+        using (SqlConnection con = new SqlConnection(connectionString))
+        using (SqlCommand cmd = new SqlCommand(query, con))
         {
-            while (reader.Read())
+            try
             {
-                producten.Add(new Producten(
-                    reader.GetString(1),
-                    reader.GetString(2),
-                    reader.GetString(3),
-                    reader.GetDouble(4)
-                )
+                con.Open(); using (SqlDataReader reader = cmd.ExecuteReader())
                 {
-                    Id = reader.GetInt32(0)
-                });
+                    while (reader.Read())
+                    {
+                        producten.Add(new Producten(
+                            reader.GetString(1),
+                            reader.GetString(2),
+                            reader.GetString(3),
+                            reader.GetDouble(4))
+                        {
+                            Id = reader.GetInt32(0)
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new DataException("Fout bij het ophalen van producten.", ex);
             }
         }
 

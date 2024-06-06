@@ -1,4 +1,5 @@
 ﻿using System;
+using TuinCentrum.BL.Exceptions;
 
 namespace TuinCentrum.BL.Model
 {
@@ -7,9 +8,10 @@ namespace TuinCentrum.BL.Model
         public int? Id { get; private set; }
         public DateTime Datum { get; set; }
         public Klanten Klant { get; set; }
-        public List<Producten> ProductenList { get; set; } = new List<Producten>();
+        private Dictionary<Producten, int> ProductenList { get; set; } = new Dictionary<Producten, int>();
+        public IReadOnlyDictionary<Producten, int> Producten => ProductenList;
         public bool Afhalen { get; set; }
-        public bool Aanleg { get; set; } 
+        public bool Aanleg { get; set; }
         public int AantalProducten { get; set; }
 
         public Offertes(int id, DateTime datum, Klanten klant, bool afhalen, bool aanleg, int aantalProducten)
@@ -22,14 +24,27 @@ namespace TuinCentrum.BL.Model
             AantalProducten = aantalProducten;
         }
 
-        public void VoegProductToe(Producten product)
+        public void VoegProductToe(Producten product, int aantal)
         {
-            ProductenList.Add(product);
+            if (product == null)
+                throw new DomeinException("Product kan niet null zijn.");
+
+            if (aantal <= 0)
+                throw new DomeinException("Aantal moet groter zijn dan 0.");
+
+            if (ProductenList.ContainsKey(product))
+            {
+                ProductenList[product] += aantal;
+            }
+            else
+            {
+                ProductenList.Add(product, aantal);
+            }
         }
 
         public double CalculateTotalPrice()
         {
-            double totalPrice = ProductenList.Sum(product => product.Prijs) * AantalProducten;
+            double totalPrice = ProductenList.Sum(item => item.Key.Prijs * item.Value);
 
             if (totalPrice > 2000)
             {

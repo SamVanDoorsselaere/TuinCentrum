@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace TuinCentrum.DL.Exceptions
 {
-    public class DataExcepetion : Exception
+    public class DataException : Exception
     {
-        public DataExcepetion(string? message) : base(message)
+        public DataException(string? message) : base(message)
         {
         }
 
-        public DataExcepetion(string? message, Exception? innerException) : base(message, innerException)
+        public DataException(string? message, Exception? innerException) : base(message, innerException)
         {
         }
 

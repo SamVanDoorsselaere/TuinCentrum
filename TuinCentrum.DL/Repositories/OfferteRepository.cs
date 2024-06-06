@@ -1,71 +1,96 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using TuinCentrum.BL.Interfaces;
 using TuinCentrum.BL.Model;
+using TuinCentrum.DL.Exceptions;
 
-public class OfferteRepository
+public class OfferteRepository : IOfferteRepository
 {
-    private readonly DatabaseContext _context;
+    private string connectionString;
 
-    public OfferteRepository(DatabaseContext context)
+    public OfferteRepository(string connectionString)
     {
-        _context = context;
+        this.connectionString = connectionString;
     }
 
     public Offertes GeefOfferteOpId(int id)
     {
         Offertes offerte = null;
-        var commando = _context.MaakCommando();
-        commando.CommandText = @"
-            SELECT o.*, k.Id as KlantId, k.Naam, k.Adres 
-            FROM Offertes o
-            JOIN Klanten k ON o.KlantId = k.Id
-            WHERE o.Id = @Id";
-        commando.Parameters.AddWithValue("@Id", id);
 
-        using (var reader = commando.ExecuteReader())
+        using (SqlConnection con = new SqlConnection(connectionString))
         {
-            if (reader.Read())
+            string query = @"
+                SELECT 
+                    o.Id,
+                    o.Datum,
+                    k.Id AS KlantId,
+                    k.Naam AS KlantNaam,
+                    k.Adres AS KlantAdres,
+                    o.Afhalen,
+                    o.Aanleg,
+                    op.ProductId AS ProductId,
+                    p.NederlandseNaam,
+                    p.WetenschappelijkeNaam,
+                    p.Beschrijving,
+                    p.Prijs,
+                    op.Aantal
+                FROM Offertes o
+                INNER JOIN Klanten k ON o.KlantId = k.Id
+                LEFT JOIN OfferteProducten op ON o.Id = op.OfferteID
+                LEFT JOIN Producten p ON op.ProductId = p.Id
+                WHERE o.Id = @Id";
+
+            using (SqlCommand command = new SqlCommand(query, con))
             {
-                var klant = new Klanten(
-                    reader.GetInt32(reader.GetOrdinal("KlantId")),
-                    reader.GetString(reader.GetOrdinal("Naam")),
-                    reader.GetString(reader.GetOrdinal("Adres"))
-                );
+                command.Parameters.AddWithValue("@Id", id);
 
-                offerte = new Offertes(
-                    reader.GetInt32(reader.GetOrdinal("Id")),
-                    reader.GetDateTime(reader.GetOrdinal("Datum")),
-                    klant,
-                    !reader.GetBoolean(reader.GetOrdinal("Afhalen")),  // Omgekeerde waarde zoals aangegeven
-                    reader.GetBoolean(reader.GetOrdinal("Aanleg")),
-                    0 // AantalProducten moet apart worden behandeld
-                );
-            }
-        }
-
-        if (offerte != null)
-        {
-            commando = _context.MaakCommando();
-            commando.CommandText = "SELECT * FROM OfferteProducten WHERE OfferteID = @OfferteID";
-            commando.Parameters.AddWithValue("@OfferteID", id);
-
-            using (var reader = commando.ExecuteReader())
-            {
-                while (reader.Read())
+                try
                 {
-                    var product = new Producten(
-                        reader.GetString(reader.GetOrdinal("NederlandseNaam")),
-                        reader.GetString(reader.GetOrdinal("WetenschappelijkeNaam")),
-                        reader.GetString(reader.GetOrdinal("Beschrijving")),
-                        reader.GetDouble(reader.GetOrdinal("Prijs"))
-                    )
+                    con.Open();
+                    using (SqlDataReader reader = command.ExecuteReader())
                     {
-                        Id = reader.GetInt32(reader.GetOrdinal("ProductId"))
-                    };
+                        while (reader.Read())
+                        {
+                            if (offerte == null)
+                            {
+                                Klanten klant = new Klanten(
+                                    reader.GetInt32(reader.GetOrdinal("KlantId")),
+                                    reader.GetString(reader.GetOrdinal("KlantNaam")),
+                                    reader.GetString(reader.GetOrdinal("KlantAdres"))
+                                );
 
-                    offerte.VoegProductToe(product);
-                    offerte.AantalProducten = reader.GetInt32(reader.GetOrdinal("Aantal"));
+                                offerte = new Offertes(
+                                    reader.GetInt32(reader.GetOrdinal("Id")),
+                                    reader.GetDateTime(reader.GetOrdinal("Datum")),
+                                    klant,
+                                    !reader.GetBoolean(reader.GetOrdinal("Afhalen")),
+                                    reader.GetBoolean(reader.GetOrdinal("Aanleg")),
+                                    0 // AantalProducten moet apart worden behandeld
+                                );
+                            }
+
+                            if (!reader.IsDBNull(reader.GetOrdinal("ProductId")))
+                            {
+                                var product = new Producten(
+                                    reader.GetString(reader.GetOrdinal("NederlandseNaam")),
+                                    reader.GetString(reader.GetOrdinal("WetenschappelijkeNaam")),
+                                    reader.GetString(reader.GetOrdinal("Beschrijving")),
+                                    reader.GetDouble(reader.GetOrdinal("Prijs"))
+                                )
+                                {
+                                    Id = reader.GetInt32(reader.GetOrdinal("ProductId"))
+                                };
+
+                                // VoegProductToe-methode aanroepen met beide argumenten
+                                offerte.VoegProductToe(product, reader.GetInt32(reader.GetOrdinal("Aantal")));
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw new DataException("Fout bij het ophalen van offerte.", ex);
                 }
             }
         }
@@ -75,4 +100,3 @@ public class OfferteRepository
 
     // Aanvullende methoden voor offerte CRUD-operaties
 }
-
