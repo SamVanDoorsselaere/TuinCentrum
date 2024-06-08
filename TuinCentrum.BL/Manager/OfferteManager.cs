@@ -23,7 +23,7 @@ namespace TuinCentrum.BL.Manager
 
         public void UploadOfferte(string fileName)
         {
-            List<string> soorten = fileProcessor.LeesProducten(fileName);
+            List<string> soorten = fileProcessor.LeesOffertes(fileName);
             List<Offertes> offertes = MaakOfferte(soorten);
             foreach (Offertes offerte in offertes)
             {
@@ -31,6 +31,7 @@ namespace TuinCentrum.BL.Manager
                     offerteRepository.SchrijfOfferte(offerte);
             }
         }
+
 
         private List<Offertes> MaakOfferte(List<string> offertes)
         {
@@ -54,16 +55,17 @@ namespace TuinCentrum.BL.Manager
                     }
                     catch (Exception ex)
                     {
+                        Console.WriteLine($"Fout bij verwerken van offerte: {offerteString}, fout: {ex.Message}");
                         throw new DomeinException("Ongeldige offertegegevens", ex);
                     }
                 }
                 else
                 {
+                    Console.WriteLine($"Ongeldige offertegegevens: {offerteString}");
                     throw new DomeinException($"Ongeldige offertegegevens: {offerteString}");
                 }
             }
             return offerteList;
         }
-
     }
 }

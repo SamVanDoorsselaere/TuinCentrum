@@ -35,27 +35,47 @@ public class OfferteRepository : IOfferteRepository
 
     public void SchrijfOfferte(Offertes offerte)
     {
-        string SQL = "INSERT INTO Offertes (Datum, KlantID, Afhalen, Aanleg) VALUES (@datum, @klantid, @afhalen, @aanleg)";
+        string setIdentityInsertOn = "SET IDENTITY_INSERT Offertes ON;";
+        string setIdentityInsertOff = "SET IDENTITY_INSERT Offertes OFF;";
+        string SQL = "INSERT INTO Offertes (OfferteID, Datum, KlantID, Afhalen, Aanleg) VALUES (@offerteid, @datum, @klantid, @afhalen, @aanleg)";
+
         using (SqlConnection conn = new SqlConnection(connectionString))
-        using (SqlCommand cmd = conn.CreateCommand())
+        using (SqlCommand cmd = new SqlCommand(SQL, conn))
         {
             try
             {
                 conn.Open();
-                cmd.CommandText = SQL;
-                // Hier geen waarde toewijzen aan OfferteID (identiteitskolom), de database zal deze automatisch genereren
+                Console.WriteLine("Connection opened");
+
+                // Zet IDENTITY_INSERT aan
+                using (SqlCommand cmdIdentityInsertOn = new SqlCommand(setIdentityInsertOn, conn))
+                {
+                    cmdIdentityInsertOn.ExecuteNonQuery();
+                    Console.WriteLine("IDENTITY_INSERT ON");
+                }
+
+                // Voer de insert query uit
+                cmd.Parameters.AddWithValue("@offerteid", offerte.OfferteID);
                 cmd.Parameters.AddWithValue("@datum", offerte.Datum);
                 cmd.Parameters.AddWithValue("@klantid", offerte.KlantID);
                 cmd.Parameters.AddWithValue("@afhalen", offerte.Afhalen);
                 cmd.Parameters.AddWithValue("@aanleg", offerte.Aanleg);
                 cmd.ExecuteNonQuery();
+                Console.WriteLine("Insert query executed");
+
+                // Zet IDENTITY_INSERT uit
+                using (SqlCommand cmdIdentityInsertOff = new SqlCommand(setIdentityInsertOff, conn))
+                {
+                    cmdIdentityInsertOff.ExecuteNonQuery();
+                    Console.WriteLine("IDENTITY_INSERT OFF");
+                }
             }
             catch (Exception ex)
             {
+                Console.WriteLine("Exception occurred: " + ex.Message);
                 throw new Exception("SchrijfOfferte", ex);
             }
         }
     }
-
 
 }

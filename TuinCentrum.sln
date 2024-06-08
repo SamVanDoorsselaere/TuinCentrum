@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TuinCentrumTests", "TuinCen
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TuinCentrum.UI", "TuinCentrum.UI\TuinCentrum.UI.csproj", "{FFE08A77-C634-45C7-A688-78B7CAD40DAC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TuinCentrumUI_DataUpload", "TuinCentrumUI_DataUpload\TuinCentrumUI_DataUpload.csproj", "{52E6F70B-E5C6-4556-B4DB-CBB6572E5D38}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TuinCentrumUI_DataUpload", "TuinCentrumUI_DataUpload\TuinCentrumUI_DataUpload.csproj", "{52E6F70B-E5C6-4556-B4DB-CBB6572E5D38}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

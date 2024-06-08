@@ -5,7 +5,7 @@ namespace TuinCentrum.BL.Model
 {
     public class Offertes
     {
-        public int? Id { get; private set; }
+        public int? OfferteID { get; private set; }
         public DateTime Datum { get; set; }
         public int KlantID {get; set;}
         private Dictionary<Producten, int> ProductenList { get; set; } = new Dictionary<Producten, int>();
@@ -16,7 +16,7 @@ namespace TuinCentrum.BL.Model
 
         public Offertes(int id, DateTime datum, int klantID, bool afhalen, bool aanleg, int aantalProducten)
         {
-            Id = id;
+            OfferteID = id;
             Datum = datum;
             KlantID = klantID;
             Afhalen = afhalen;

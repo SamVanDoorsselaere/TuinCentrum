@@ -101,7 +101,7 @@ namespace TuinCentrumUI_DataUpload
             {
                 om.UploadOfferte(fileName);
             }
-            MessageBox.Show("Upload klaar", "Producten");
+            MessageBox.Show("Upload klaar", "Offertes");
         }
 
         private void Button_Click_OfferteProducten(object sender, RoutedEventArgs e)
@@ -110,7 +110,7 @@ namespace TuinCentrumUI_DataUpload
             if (result == true)
             {
                 var fileNames = openFileDialog.FileNames;
-                OfferteProductenListBox.ItemsSource = fileNames;
+                OfferteProductenFileListBox.ItemsSource = fileNames;
                 openFileDialog.FileName = null;
             }
         }
@@ -121,7 +121,7 @@ namespace TuinCentrumUI_DataUpload
             {
                 om.UploadOfferte(fileName);
             }
-            MessageBox.Show("Upload klaar", "Producten");
+            MessageBox.Show("Upload klaar", "OfferteProducten");
         }
 
     }

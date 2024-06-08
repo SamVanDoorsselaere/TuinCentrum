@@ -44,5 +44,22 @@ namespace TuinCentrum.DL.Processor
             }
             catch (Exception ex) { throw new Exception($"FileProcessor.leesProducten - {fileName}", ex); }
         }
+        public List<string> LeesOffertes(string fileName)
+        {
+            try
+            {
+                List<string> klanten = new List<string>();
+                using (StreamReader sr = new StreamReader(fileName))
+                {
+                    string line;
+                    while ((line = sr.ReadLine()) != null)
+                    {
+                        klanten.Add(line.Trim());
+                    }
+                }
+                return klanten;
+            }
+            catch (Exception ex) { throw new Exception($"FileProcessor.leesOffertes - {fileName}", ex); }
+        }
     }
 }
