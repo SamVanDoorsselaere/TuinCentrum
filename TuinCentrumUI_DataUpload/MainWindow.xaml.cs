@@ -13,6 +13,7 @@ using System.Windows.Shapes;
 using TuinCentrum.BL.Interfaces;
 using TuinCentrum.BL.Manager;
 using TuinCentrum.DL.Processor;
+using TuinCentrum.DL.Repositories;
 
 namespace TuinCentrumUI_DataUpload
 {
@@ -24,9 +25,11 @@ namespace TuinCentrumUI_DataUpload
         IKlantRepository klantRepository;
         IProductRepository productRepository;
         IOfferteRepository offerteRepository;
+        IOfferteProductenRepository offerteProductenRepository;
         KlantManager km;
         ProductenManager pm;
         OfferteManager om;
+        OfferteProductenManager opm;
 
         public MainWindow()
         {
@@ -39,9 +42,11 @@ namespace TuinCentrumUI_DataUpload
             productRepository = new ProductRepository(connectionString);
             klantRepository = new KlantRepository(connectionString);
             offerteRepository = new OfferteRepository(connectionString);
+            offerteProductenRepository = new OfferteProductRepository(connectionString);
             km = new KlantManager(processor, klantRepository);
             pm = new ProductenManager(processor, productRepository);
             om = new OfferteManager(processor, offerteRepository);
+            opm = new OfferteProductenManager(processor, offerteProductenRepository);
         }
 
         private void Button_Click_Klanten(object sender, RoutedEventArgs e)
@@ -119,7 +124,7 @@ namespace TuinCentrumUI_DataUpload
         {
             foreach (string fileName in OfferteProductenFileListBox.ItemsSource)
             {
-                om.UploadOfferte(fileName);
+                opm.UploadOfferteProducten(fileName);
             }
             MessageBox.Show("Upload klaar", "OfferteProducten");
         }

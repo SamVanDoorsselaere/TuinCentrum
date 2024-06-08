@@ -35,9 +35,7 @@ public class OfferteRepository : IOfferteRepository
 
     public void SchrijfOfferte(Offertes offerte)
     {
-        string setIdentityInsertOn = "SET IDENTITY_INSERT Offertes ON;";
-        string setIdentityInsertOff = "SET IDENTITY_INSERT Offertes OFF;";
-        string SQL = "INSERT INTO Offertes (OfferteID, Datum, KlantID, Afhalen, Aanleg) VALUES (@offerteid, @datum, @klantid, @afhalen, @aanleg)";
+        string SQL = "INSERT INTO Offertes (Datum, KlantID, Afhalen, Aanleg) VALUES (@datum, @klantid, @afhalen, @aanleg)";
 
         using (SqlConnection conn = new SqlConnection(connectionString))
         using (SqlCommand cmd = new SqlCommand(SQL, conn))
@@ -47,12 +45,6 @@ public class OfferteRepository : IOfferteRepository
                 conn.Open();
                 Console.WriteLine("Connection opened");
 
-                // Zet IDENTITY_INSERT aan
-                using (SqlCommand cmdIdentityInsertOn = new SqlCommand(setIdentityInsertOn, conn))
-                {
-                    cmdIdentityInsertOn.ExecuteNonQuery();
-                    Console.WriteLine("IDENTITY_INSERT ON");
-                }
 
                 // Voer de insert query uit
                 cmd.Parameters.AddWithValue("@offerteid", offerte.OfferteID);
@@ -63,12 +55,6 @@ public class OfferteRepository : IOfferteRepository
                 cmd.ExecuteNonQuery();
                 Console.WriteLine("Insert query executed");
 
-                // Zet IDENTITY_INSERT uit
-                using (SqlCommand cmdIdentityInsertOff = new SqlCommand(setIdentityInsertOff, conn))
-                {
-                    cmdIdentityInsertOff.ExecuteNonQuery();
-                    Console.WriteLine("IDENTITY_INSERT OFF");
-                }
             }
             catch (Exception ex)
             {

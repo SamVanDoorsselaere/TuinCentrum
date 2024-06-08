@@ -62,6 +62,11 @@ namespace TuinCentrum.BL.Model
             Beschrijving = beschrijving;
             Prijs = prijs;
         }
+
+        public Producten(int id)
+        {
+            Id = id;
+        }
         public Producten(string nederlandseNaam)
         {
             NederlandseNaam = nederlandseNaam;

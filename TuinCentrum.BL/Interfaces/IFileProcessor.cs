@@ -10,6 +10,7 @@ namespace TuinCentrum.BL.Interfaces
     {
         List<string> LeesKlanten(string fileName);
         List<string> LeesProducten(string fileName);
-        List<String> LeesOffertes(string fileName);
+        List<string> LeesOffertes(string fileName);
+        List<string> LeesOfferteProducten(string fileName);
     }
 }

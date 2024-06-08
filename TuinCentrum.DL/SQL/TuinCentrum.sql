@@ -16,6 +16,8 @@ CREATE TABLE Offertes (
     OfferteID INT PRIMARY KEY NOT NULL,
     KlantID INT NOT NULL,
     Datum DATE NOT NULL,
+    Afhalen BOOLEAN NOT NULL,
+    Aanleg BOOLEAN NOT NULL,
     FOREIGN KEY (KlantID) REFERENCES Klanten(KlantID)
 );
 
