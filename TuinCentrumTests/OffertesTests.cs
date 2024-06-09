@@ -11,11 +11,10 @@ namespace TuinCentrumTests
         public void Test_BerekenTotalePrijs_ZonderKorting_EnZonderAfhalen()
         {
             var klant = new Klanten(id: 1, naam: "Test Klant", adres: "Test Adres");
-            var offerte = new Offertes(1, DateTime.Now, klant, afhalen: true, aanleg: false, aantalProducten: 3);
+            var offerte = new Offertes(1, DateTime.Now, klantID: 10, afhalen: true, aanleg: false, aantalProducten: 3);
             var product1 = new Producten("Product 1", "Wetenschappelijke naam 1", "Beschrijving 1", 100);
             var product2 = new Producten("Product 2", "Wetenschappelijke naam 2", "Beschrijving 2", 150);
-            offerte.VoegProductToe(product1);
-            offerte.VoegProductToe(product2);
+            offerte.VoegProductToe(product2, 5);
 
             var totalePrijs = offerte.CalculateTotalPrice();
 
@@ -27,9 +26,9 @@ namespace TuinCentrumTests
         public void Test_BerekenTotalePrijs_MetKorting()
         {
             var klant = new Klanten(id: 1, naam: "Test Klant", adres: "Test Adres");
-            var offerte = new Offertes(1, DateTime.Now, klant, afhalen: false, aanleg: false, aantalProducten: 1);
+            var offerte = new Offertes(1, DateTime.Now, klantID: 15, afhalen: true, aanleg: false, aantalProducten: 3);
             var product = new Producten("Product", "Wetenschappelijke naam", "Beschrijving", 5000);
-            offerte.ProductenList.Add(product);
+            offerte.ProductenList.Add(product, 1);
 
             var totalePrijs = offerte.CalculateTotalPrice();
 
@@ -41,9 +40,9 @@ namespace TuinCentrumTests
         {
             // Arrange
             var klant = new Klanten(id: 1, naam: "Test Klant", adres: "Test Adres");
-            var offerte = new Offertes(1, DateTime.Now, klant, afhalen: false, aanleg: false, aantalProducten: 1);
-            var product = new Producten("Product", "Wetenschappelijke naam", "Beschrijving", 400);
-            offerte.ProductenList.Add(product);
+            var offerte = new Offertes(1, DateTime.Now, klantID: 25, afhalen: true, aanleg: false, aantalProducten: 3);
+            var product = new Producten("Product", "Wetenschappelijke naam", "Beschrijving", 500);
+            offerte.ProductenList.Add(product, 1);
 
             // Act
             var totalePrijs = offerte.CalculateTotalPrice();

@@ -8,8 +8,7 @@ namespace TuinCentrum.BL.Model
         public int? OfferteID { get; private set; }
         public DateTime Datum { get; set; }
         public int KlantID {get; set;}
-        private Dictionary<Producten, int> ProductenList { get; set; } = new Dictionary<Producten, int>();
-        public IReadOnlyDictionary<Producten, int> Producten => ProductenList;
+        public Dictionary<Producten, int> ProductenList { get; set; } = new Dictionary<Producten, int>();
         public bool Afhalen { get; set; }
         public bool Aanleg { get; set; }
         public int AantalProducten { get; set; }
