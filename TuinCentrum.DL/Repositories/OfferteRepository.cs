@@ -1,6 +1,7 @@
 ﻿using TuinCentrum.BL.Interfaces;
 using TuinCentrum.BL.Model;
 using Microsoft.Data.SqlClient;
+using TuinCentrum.DL.Exceptions;
 
 public class OfferteRepository : IOfferteRepository
 {
@@ -63,5 +64,45 @@ public class OfferteRepository : IOfferteRepository
             }
         }
     }
+
+    public Offertes GeefOfferte(int offerteId)
+    {
+        string query = "SELECT * FROM Offertes WHERE OfferteID = @offerteId";
+        using (SqlConnection con = new SqlConnection(connectionString))
+        using (SqlCommand cmd = new SqlCommand(query, con))
+        {
+            try
+            {
+                con.Open();
+                cmd.Parameters.AddWithValue("@offerteId", offerteId);
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        int offerteID = reader.GetInt32(reader.GetOrdinal("OfferteID"));
+                        DateTime datum = reader.GetDateTime(reader.GetOrdinal("Datum"));
+                        int klantID = reader.GetInt32(reader.GetOrdinal("KlantID"));
+                        bool afhalen = reader.GetBoolean(reader.GetOrdinal("Afhalen"));
+                        bool aanleg = reader.GetBoolean(reader.GetOrdinal("Aanleg"));
+
+                        return new Offertes(offerteID, datum, klantID, afhalen, aanleg);
+                    }
+                }
+            }
+            catch (SqlException sqlEx)
+            {
+                throw new DataException("Fout bij het ophalen van offerte (SQL-fout).", sqlEx);
+            }
+            catch (Exception ex)
+            {
+                throw new DataException("Fout bij het ophalen van offerte (algemene fout).", ex);
+            }
+        }
+        return null;
+    }
+
+
+
+
 
 }

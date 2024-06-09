@@ -24,6 +24,15 @@ namespace TuinCentrum.BL.Model
             AantalProducten = aantalProducten;
         }
 
+        public Offertes(int offerteID, DateTime datum, int klantID, bool afhalen, bool aanleg)
+        {
+            OfferteID = offerteID;
+            Datum = datum;
+            KlantID = klantID;
+            Afhalen = afhalen;
+            Aanleg = aanleg;
+        }
+
 
         public Offertes(int id, int aantalProducten)
         {

@@ -12,9 +12,9 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Button Grid.Row="0" Grid.Column="0" Content="Offertes" Margin="5" Click="Button_Click_Offertes"/>
-        <Button Grid.Row="0" Grid.Column="1" Content="Producten" Margin="5" Click="Button_Click_Producten"/>
-        <Button Grid.Row="0" Grid.Column="2" Content="Klanten" Margin="5" Click="Button_Click_Klanten"/>
+        <Button Grid.Row="0" Grid.Column="0" Content="Toon Offertes" Margin="5" Click="Button_Click_Offertes"/>
+        <Button Grid.Row="0" Grid.Column="1" Content="Maak Offerte Aan" Margin="5" Click="Button_Click_OfferteAanmaken"/>
+        <Button Grid.Row="0" Grid.Column="2" Content="Toon Klanten" Margin="5" Click="Button_Click_Klanten"/>
 
 
     </Grid>

@@ -12,5 +12,6 @@ namespace TuinCentrum.BL.Interfaces
         List<Klanten> GeefAlleKlanten();
         bool HeeftKlant(Klanten klant);
         void SchrijfKlant(Klanten klant);
+        List<Klanten> ZoekKlantenOpNaam(string naam);
     }
 }

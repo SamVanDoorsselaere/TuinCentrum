@@ -68,8 +68,6 @@ public class KlantRepository : IKlantRepository
         }
     }
 
-
-
     public List<Klanten> GeefAlleKlanten()
     {
         List<Klanten> klanten = new List<Klanten>();
@@ -86,7 +84,7 @@ public class KlantRepository : IKlantRepository
                     while (reader.Read())
                     {
                         Klanten klant = new Klanten(
-                            reader.GetInt32(reader.GetOrdinal("Id")),
+                            reader.GetInt32(reader.GetOrdinal("KlantID")), // Gebruik "KlantID" in plaats van "Id"
                             reader.GetString(reader.GetOrdinal("Naam")),
                             reader.GetString(reader.GetOrdinal("Adres"))
                         );
@@ -94,12 +92,51 @@ public class KlantRepository : IKlantRepository
                     }
                 }
             }
+            catch (SqlException sqlEx)
+            {
+                throw new DataException("Fout bij het ophalen van klanten (SQL-fout).", sqlEx);
+            }
             catch (Exception ex)
             {
-                throw new DataException("Fout bij het ophalen van klanten.", ex);
+                throw new DataException("Fout bij het ophalen van klanten (algemene fout).", ex);
             }
         }
         return klanten;
+    }
+
+    public List<Klanten> ZoekKlantenOpNaam(string naam)
+    {
+        List<Klanten> gevondenKlanten = new List<Klanten>();
+
+        string query = "SELECT * FROM Klanten WHERE Naam LIKE @zoekTerm";
+        using (SqlConnection con = new SqlConnection(connectionString))
+        using (SqlCommand cmd = new SqlCommand(query, con))
+        {
+            cmd.Parameters.AddWithValue("@zoekTerm", "%" + naam + "%");
+
+            try
+            {
+                con.Open();
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        int klantID = reader.GetInt32(reader.GetOrdinal("KlantID"));
+                        string klantNaam = reader.GetString(reader.GetOrdinal("Naam"));
+                        string adres = reader.GetString(reader.GetOrdinal("Adres"));
+                        Klanten klant = new Klanten(klantID, klantNaam, adres);
+                        gevondenKlanten.Add(klant);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exception appropriately
+                Console.WriteLine("Fout bij het zoeken naar klanten op naam: " + ex.Message);
+            }
+        }
+
+        return gevondenKlanten;
     }
 
 }

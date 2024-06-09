@@ -11,5 +11,6 @@ namespace TuinCentrum.BL.Interfaces
     {
         bool HeeftOfferte(Offertes offerte);
         void SchrijfOfferte(Offertes offerte);
+        Offertes GeefOfferte(int offerteId);
     }
 }

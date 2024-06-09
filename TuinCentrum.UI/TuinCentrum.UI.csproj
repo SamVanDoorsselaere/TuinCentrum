@@ -12,4 +12,9 @@
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TuinCentrum.BL\TuinCentrum.BL.csproj" />
+    <ProjectReference Include="..\TuinCentrum.DL\TuinCentrum.DL.csproj" />
+  </ItemGroup>
+
 </Project>
