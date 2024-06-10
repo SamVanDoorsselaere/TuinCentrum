@@ -7,7 +7,7 @@ namespace TuinCentrum.BL.Model
     {
         public int? OfferteID { get; private set; }
         public DateTime Datum { get; set; }
-        public int KlantID {get; set;}
+        public int? KlantID {get; set;}
         public Dictionary<Producten, int> ProductenList { get; set; } = new Dictionary<Producten, int>();
         public bool Afhalen { get; set; }
         public bool Aanleg { get; set; }
@@ -16,6 +16,14 @@ namespace TuinCentrum.BL.Model
         public Offertes(int id, DateTime datum, int klantID, bool afhalen, bool aanleg, int aantalProducten)
         {
             OfferteID = id;
+            Datum = datum;
+            KlantID = klantID;
+            Afhalen = afhalen;
+            Aanleg = aanleg;
+            AantalProducten = aantalProducten;
+        }
+        public Offertes(DateTime datum, int? klantID, bool afhalen, bool aanleg, int aantalProducten)
+        {
             Datum = datum;
             KlantID = klantID;
             Afhalen = afhalen;
@@ -36,15 +44,6 @@ namespace TuinCentrum.BL.Model
         public Offertes(int id, int aantalProducten)
         {
             OfferteID = id;
-            AantalProducten = aantalProducten;
-        }
-
-        public Offertes(DateTime datum, int klantID, bool afhalen, bool aanleg, int aantalProducten)
-        {
-            Datum = datum;
-            KlantID = klantID;
-            Afhalen = afhalen;
-            Aanleg = aanleg;
             AantalProducten = aantalProducten;
         }
 

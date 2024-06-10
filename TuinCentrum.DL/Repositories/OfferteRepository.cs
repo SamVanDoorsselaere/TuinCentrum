@@ -44,18 +44,12 @@ public class OfferteRepository : IOfferteRepository
             try
             {
                 conn.Open();
-                Console.WriteLine("Connection opened");
-
-
-                // Voer de insert query uit
-                cmd.Parameters.AddWithValue("@offerteid", offerte.OfferteID);
                 cmd.Parameters.AddWithValue("@datum", offerte.Datum);
                 cmd.Parameters.AddWithValue("@klantid", offerte.KlantID);
                 cmd.Parameters.AddWithValue("@afhalen", offerte.Afhalen);
                 cmd.Parameters.AddWithValue("@aanleg", offerte.Aanleg);
                 cmd.ExecuteNonQuery();
                 Console.WriteLine("Insert query executed");
-
             }
             catch (Exception ex)
             {
@@ -64,6 +58,7 @@ public class OfferteRepository : IOfferteRepository
             }
         }
     }
+
 
     public Offertes GeefOfferte(int offerteId)
     {

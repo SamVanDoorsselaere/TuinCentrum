@@ -32,6 +32,7 @@
                 </GridView>
             </ListView.View>
         </ListView>
+        <Button Content="Voeg Producten Toe" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="630,40,0,0" Width="150" Click="Button_VoegProductenToe_Click"/>
         <TextBlock x:Name="txtTotalePrijs" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10,10,0,0" Width="200" Height="30" Text="Totale Prijs: €0,00"/>
     </Grid>
 </Window>

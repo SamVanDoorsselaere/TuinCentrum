@@ -41,9 +41,9 @@ namespace TuinCentrum.BL.Model
             Adres = adres;
         }
 
-        public Klanten(int? id, string naam, string adres)
+        public Klanten(int? klantID, string naam, string adres)
         {
-            KlantID = id;
+            KlantID = klantID;
             Naam = naam;
             Adres = adres;
         }
