@@ -9,7 +9,7 @@
     <Grid>
         <TextBox x:Name="txtKlantNaam" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10" Width="200" />
         <Button Content="Zoek Klant" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,10,0,0" Width="100" Click="Button_ZoekKlant_Click" />
-        <ListView x:Name="lvKlanten" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,40,10,10" Width="300">
+        <ListView x:Name="lvKlanten" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,40,10,10" Width="300" SelectionChanged="lvKlanten_SelectionChanged">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="ID" DisplayMemberBinding="{Binding KlantID}" Width="50"/>
@@ -17,5 +17,21 @@
                 </GridView>
             </ListView.View>
         </ListView>
+        <ListView x:Name="lvProducten" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,40,10,10" Width="300">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Product" DisplayMemberBinding="{Binding NederlandseNaam}" Width="150"/>
+                    <GridViewColumn Header="Prijs" DisplayMemberBinding="{Binding Prijs, StringFormat=C}" Width="50"/>
+                    <GridViewColumn Header="Aantal">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBox Width="50" TextChanged="TextBox_TextChanged"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <TextBlock x:Name="txtTotalePrijs" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10,10,0,0" Width="200" Height="30" Text="Totale Prijs: €0,00"/>
     </Grid>
 </Window>

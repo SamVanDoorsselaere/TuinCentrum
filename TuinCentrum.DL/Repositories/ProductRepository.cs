@@ -79,7 +79,7 @@ public class ProductRepository : IProductRepository
                             reader.GetString(1),
                             reader.GetString(2),
                             reader.GetString(3),
-                            reader.GetDouble(4))
+                            (double)reader.GetDecimal(4))
                         {
                             Id = reader.GetInt32(0)
                         });

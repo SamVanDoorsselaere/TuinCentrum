@@ -13,6 +13,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TuinCentrum.UI", "TuinCentr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TuinCentrumUI_DataUpload", "TuinCentrumUI_DataUpload\TuinCentrumUI_DataUpload.csproj", "{52E6F70B-E5C6-4556-B4DB-CBB6572E5D38}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Diagrammen", "Diagrammen", "{20C49EC9-4389-42CC-A10E-C6A87CD6A8B7}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\Downloads\ArchitectuurDiagram.docx = ..\..\..\Downloads\ArchitectuurDiagram.docx
+		..\..\..\Downloads\Klassendiagram.docx = ..\..\..\Downloads\Klassendiagram.docx
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
