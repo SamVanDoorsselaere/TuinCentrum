@@ -60,16 +60,16 @@ public class OfferteRepository : IOfferteRepository
     }
 
 
-    public Offertes GeefOfferte(int offerteId)
+    public Offertes GeefOfferteOpKlantID(int klantId)
     {
-        string query = "SELECT * FROM Offertes WHERE OfferteID = @offerteId";
+        string query = "SELECT * FROM Offertes WHERE KlantID = @klantId";
         using (SqlConnection con = new SqlConnection(connectionString))
         using (SqlCommand cmd = new SqlCommand(query, con))
         {
             try
             {
                 con.Open();
-                cmd.Parameters.AddWithValue("@offerteId", offerteId);
+                cmd.Parameters.AddWithValue("@klantId", klantId);
                 using (SqlDataReader reader = cmd.ExecuteReader())
                 {
                     if (reader.Read())

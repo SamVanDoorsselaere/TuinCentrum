@@ -19,12 +19,12 @@ namespace TuinCentrum.UI
 
         private void Button_Click_ZoekOfferte(object sender, RoutedEventArgs e)
         {
-            int offerteId;
-            if (int.TryParse(offerteIdTextBox.Text, out offerteId))
+            int klantId;
+            if (int.TryParse(klantIdTextBox.Text, out klantId))
             {
                 try
                 {
-                    var offerte = offerteRepository.GeefOfferte(offerteId);
+                    var offerte = offerteRepository.GeefOfferteOpKlantID(klantId);
                     if (offerte != null)
                     {
                         offerteDetailsTextBlock.Text = $"Offerte ID: {offerte.OfferteID}\nDatum: {offerte.Datum}\nKlant ID: {offerte.KlantID}\nAfhalen: {offerte.Afhalen}\nAanleg: {offerte.Aanleg}";
@@ -45,8 +45,9 @@ namespace TuinCentrum.UI
             }
             else
             {
-                MessageBox.Show("Voer een geldig offerte ID in.");
+                MessageBox.Show("Voer een geldig KlantID in.");
             }
         }
+
     }
 }
